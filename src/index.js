@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { connect, Provider } from 'react-redux';
 import axios from 'axios';
 import Nav from './Nav';
-import store from './store';
+import store from './store/store';
 import Groceries from './Groceries';
 import CreateForm from './CreateForm';
 
@@ -34,14 +34,14 @@ const App = connect(
   state => state,
   (dispatch)=> {
     return {
-      setView: (view)=> dispatch({ type: 'SET_VIEW', view }), 
+      setView: (view)=> dispatch({ type: 'SET_VIEW', view }),
       bootstrap: async()=> {
         const groceries = (await axios.get('/api/groceries')).data;
         dispatch({
           type: 'LOAD',
           groceries
         })
-      } 
+      }
     }
   }
 )(_App);
