@@ -1,40 +1,42 @@
-import React from 'react';
-import axios from 'axios';
+import React from "react";
+import { connect } from "react-redux";
+import { createRandomGrocery, toggle } from "./store/reducers/groceries";
 
-import { connect } from 'react-redux';
-
-const _Groceries = ({ groceries, view, toggle, create })=> {
+const _Groceries = ({ groceries, view, toggle, createRandomGrocery }) => {
   return (
     <div>
-      <button onClick={ create }>Create</button>
+      <button onClick={createRandomGrocery}>Create</button>
       <ul>
-        {
-          groceries.filter(grocery => !view || ( grocery.purchased && view === 'purchased') ||( !grocery.purchased && view === 'needs') ).map( grocery => {
+        {groceries
+          .filter(
+            (grocery) =>
+              !view ||
+              (grocery.purchased && view === "purchased") ||
+              (!grocery.purchased && view === "needs")
+          )
+          .map((grocery) => {
             return (
-              <li onClick={ ()=> toggle(grocery)} key={ grocery.id } className={ grocery.purchased ? 'purchased': ''}>{ grocery.name }</li>
+              <li
+                onClick={() => toggle(grocery)}
+                key={grocery.id}
+                className={grocery.purchased ? "purchased" : ""}
+              >
+                {grocery.name}
+              </li>
             );
-          })
-        }
+          })}
       </ul>
     </div>
   );
 };
 
-const mapDispatchToProps = (dispatch)=> {
+const mapDispatchToProps = (dispatch) => {
   return {
-    toggle: async(grocery)=>{
-      const updated = (await axios.put(`/api/groceries/${grocery.id}`, { purchased: !grocery.purchased })).data;
-      dispatch({ type: 'UPDATE', grocery: updated});
-
-    }, 
-    create: async()=>{
-      const grocery = (await axios.post('/api/groceries/random')).data;
-      dispatch({ type: 'CREATE', grocery });
-
-    } 
+    toggle: (grocery) => dispatch(toggle(grocery)),
+    createRandomGrocery: () => dispatch(createRandomGrocery()),
   };
 };
 
-const Groceries = connect(state => state, mapDispatchToProps)(_Groceries);
+const Groceries = connect((state) => state, mapDispatchToProps)(_Groceries);
 
 export default Groceries;

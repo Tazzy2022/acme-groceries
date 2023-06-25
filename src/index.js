@@ -29,15 +29,13 @@ class _App extends Component {
   }
 }
 
-//created setView action below, so no need to create in view.js
+//they created setView action below, so no need to create in view.js
 const App = connect(
   (state) => state,
   (dispatch) => {
     return {
       setView: (view) => dispatch({ type: "SET_VIEW", view }),
-      getInitialData: () => {
-        return dispatch(getInitialData);
-      },
+      getInitialData: () => dispatch(getInitialData()),
     };
   }
 )(_App);
