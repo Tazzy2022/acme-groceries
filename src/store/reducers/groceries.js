@@ -1,5 +1,3 @@
-import { SET_VIEW } from "./actions";
-
 // groceries=
 // id:
 // type:
@@ -10,6 +8,7 @@ const initialState = [];
 const LOAD = "LOAD";
 const CREATE = "CREATE";
 const UPDATE = "UPDATE";
+const ERROR = "ERROR";
 
 export const loadGroceries = (groceries) => {
   return {
@@ -33,12 +32,19 @@ export const updateGroceries = (id) => {
   };
 };
 
-//previosuly we did create (addgrocery) like:
-// const newGrocery = {
-// 	id: action.id,
-// 	text: action.text,
-// };
-//why different now?
+export const getInitialData = () => {
+  return async (dispatch) => {
+    try {
+      const groceries = (await axios.get("/api/groceries")).data;
+      dispatch(loadGroceries(groceries));
+    } catch (error) {
+      dispatch({
+        type: ERROR,
+        error: error.message,
+      });
+    }
+  };
+};
 
 const groceries = (state = initialState, action) => {
   switch (action.type) {

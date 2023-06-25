@@ -1,13 +1,13 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import loggerMiddleware from 'redux-logger'
-import thunkMiddleware from 'redux-thunk'
-import { groceries } from './reducers/groceries'
-import { view } from './reducers/view'
+import loggerMiddleware from "redux-logger";
+import thunkMiddleware from "redux-thunk";
+import groceries from "./reducers/groceries";
+import { viewReducer } from "./reducers/view";
 
-const reducer = combineReducers ({
+const reducer = combineReducers({
   groceries,
-  view
-})
+  view: viewReducer,
+});
 
 // new state:
 // {
@@ -15,6 +15,7 @@ const reducer = combineReducers ({
 //   view: ""
 // }
 
-export default createStore(reducer, applyMiddleware(thunkMiddleware, loggerMiddleware))
-
-
+export default createStore(
+  reducer,
+  applyMiddleware(thunkMiddleware, loggerMiddleware)
+);

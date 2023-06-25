@@ -3,13 +3,14 @@ import { render } from "react-dom";
 import { connect, Provider } from "react-redux";
 import axios from "axios";
 import Nav from "./Nav";
-import store from "./store";
+import store from "./store/store";
 import Groceries from "./Groceries";
 import CreateForm from "./CreateForm";
+import { getInitialData } from "./store/reducers/groceries";
 
 class _App extends Component {
-  componentDidMount() {
-    this.props.bootstrap();
+  async componentDidMount() {
+    this.props.getInitialData();
     window.addEventListener("hashchange", () => {
       this.props.setView(window.location.hash.slice(1));
     });
@@ -28,17 +29,14 @@ class _App extends Component {
   }
 }
 
+//created setView action below, so no need to create in view.js
 const App = connect(
   (state) => state,
   (dispatch) => {
     return {
       setView: (view) => dispatch({ type: "SET_VIEW", view }),
-      bootstrap: async () => {
-        const groceries = (await axios.get("/api/groceries")).data;
-        dispatch({
-          type: "LOAD",
-          groceries,
-        });
+      getInitialData: () => {
+        return dispatch(getInitialData);
       },
     };
   }
