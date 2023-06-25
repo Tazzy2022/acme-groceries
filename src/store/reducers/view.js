@@ -1,16 +1,18 @@
 const initialState = "";
 
-export const setView = (text) => {
+const SET_VIEW = "SET_VIEW";
+
+export const setView = (payload) => {
   return {
-    type: "SET_VIEW",
-    text,
+    type: SET_VIEW,
+    payload,
   };
 };
 
 const view = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_VIEW":
-      return (state = action.text);
+    case SET_VIEW:
+      return action.payload;
     default:
       return state;
   }

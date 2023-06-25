@@ -1,23 +1,20 @@
-import { createStore } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import loggerMiddleware from 'redux-logger'
+import thunkMiddleware from 'redux-thunk'
+import { groceries } from './reducers/groceries'
+import { view } from './reducers/view'
 
-// const initialState = {
+const reducer = combineReducers ({
+  groceries,
+  view
+})
+
+// new state:
+// {
 //   groceries: [],
-//   view: ''
-// };
-// const store = createStore((state = initialState, action)=> {
-//   if(action.type === 'LOAD'){
-//     state = {...state, groceries: action.groceries };
-//   }
-//   if(action.type === 'UPDATE'){
-//     state = {...state, groceries: state.groceries.map(grocery => grocery.id === action.grocery.id ? action.grocery : grocery )};
-//   }
-//   if(action.type === 'CREATE'){
-//     state = {...state, groceries: [...state.groceries, action.grocery ]}
-//   }
-// if(action.type === 'SET_VIEW'){
-//   state = {...state, view: action.view};
+//   view: ""
 // }
-//   return state;
-// });
 
-// export default store;
+export default createStore(reducer, applyMiddleware(thunkMiddleware, loggerMiddleware))
+
+
